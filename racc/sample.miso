@@ -1,0 +1,31 @@
+# Creating a role
+role Student
+	learn knowledge
+		self, become knowledge
+
+# Allows the object to do basic calculation
+role Calculator
+	add a b
+		a + b
+	substract a b
+		a - b
+
+# Print to stdout
+role Printer
+	printer
+		# prints...
+
+
+# Teaches students
+role Teacher
+	teach student
+		# teaches everything to student
+		roles, each r
+			student, learn r	
+
+
+printer, become Student
+calc, become Calculator
+
+
+printer, print ( calc, add 1 2 )
