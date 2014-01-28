@@ -60,17 +60,45 @@ class MisoLexer < Racc::Parser
       when (text = @ss.scan(/[ \t]+/))
         ;
 
-      when (text = @ss.scan(/\w+/))
+      when (text = @ss.scan(/role/))
+         action { [:ROLE, text] }
+
+      when (text = @ss.scan(/def/))
+         action { [:DEF, text] }
+
+      when (text = @ss.scan(/\#/))
+         action { @state = :COMM; [:COMM_IN, text] }
+
+      when (text = @ss.scan(/\(/))
+         action { [:LPAREN, text] }
+
+      when (text = @ss.scan(/\)/))
+         action { [:RPAREN, text] }
+
+      when (text = @ss.scan(/\{/))
+         action { [:LCURLY, text] }
+
+      when (text = @ss.scan(/\}/))
+         action { [:RCURLY, text] }
+
+      when (text = @ss.scan(/[a-zA-Z_][a-zA-Z0-9_]*/))
          action { [:IDENTIFIER, text] }
 
-      when (text = @ss.scan(/,/))
-         action { [:COMMA, text] }
+      when (text = @ss.scan(/./))
+         action { [text, text] }
 
       when (text = @ss.scan(/\n/))
          action { [:NEWLINE, text] }
 
-      when (text = @ss.scan(/\#/))
-         action { [:HASHTAG, text] }
+      else
+        text = @ss.string[@ss.pos .. -1]
+        raise  ScanError, "can not match: '" + text + "'"
+      end  # if
+
+    when :COMM
+      case
+      when (text = @ss.scan(/.*$/))
+         action { @state = nil;   [:COMMENT, text] }
 
       else
         text = @ss.string[@ss.pos .. -1]
