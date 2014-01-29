@@ -1,0 +1,18 @@
+class Parser
+
+token IDENTIFIER
+
+token COMM_IN
+token COMMENT
+
+token ROLE
+token DEF
+
+token RCURLY
+token LCURLY
+token LPAREN
+token RPAREN
+
+token NEWLINE
+
+end

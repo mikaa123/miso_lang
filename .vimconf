@@ -1,0 +1,2 @@
+:call VimuxRunCommand("clear; rex lexer.rex --stub; ruby lexer.rex.rb sample.miso")
+:map ,x :VimuxRunLastCommand<cr>
